@@ -1,59 +1,51 @@
 package com.fyt.androidpractise;
 
-import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 public class MainActivity extends ActionBarActivity {
-    private ImageView img = null;
-    private Button btn = null;
+    private Spinner _sp = null;
+    private Spinner _spArea = null;
+    private String[][] areaData = new String[][]{
+            {"东城", "西城", "朝阳", "海淀"},
+            {"浦东", "闵行", "上1", "上2"},
+            {"广1", "广2"},
+            {"深1", "深2"} };
+    private ArrayAdapter<CharSequence> adapterArea = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        this._sp = (Spinner)super.findViewById(R.id.spn);
+        this._spArea = (Spinner)super.findViewById(R.id.spn_area);
 
-        this.img = (ImageView)super.findViewById(R.id.img);
-        this.btn = (Button)super.findViewById(R.id.btn);
-
-        this.btn.setOnClickListener(new ChangeScreenListener());
+        _sp.setOnItemSelectedListener(new spItemSelectedListener());
     }
 
-    private class ChangeScreenListener implements View.OnClickListener{
+    private class spItemSelectedListener implements AdapterView.OnItemSelectedListener{
         @Override
-        public void onClick(View view) {
-            if(MainActivity.this.getRequestedOrientation() ==
-                    ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
-                MainActivity.this.btn.setText("Unchangeable");
-            else if(MainActivity.this.getRequestedOrientation() ==
-                    ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
-                MainActivity.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-            else if(MainActivity.this.getRequestedOrientation() ==
-                    ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-                MainActivity.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+            MainActivity.this.adapterArea = new ArrayAdapter<CharSequence>(MainActivity.this,
+                    android.R.layout.simple_dropdown_item_1line,
+                    MainActivity.this.areaData[position]);
+            MainActivity.this.adapterArea.setDropDownViewResource(
+                    android.R.layout.simple_spinner_dropdown_item);
+            MainActivity.this._spArea.setAdapter(MainActivity.this.adapterArea);
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> adapterView) {
+
         }
     }
 
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig){
-        if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE){
-            MainActivity.this.btn.setText("Landscape now");
-            MainActivity.this.img.setImageResource(R.drawable.lyf_lan);
-        }
-        if(newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
-            MainActivity.this.btn.setText("Portrait now");
-            MainActivity.this.img.setImageResource(R.drawable.lyf_por);
-        }
-        super.onConfigurationChanged(newConfig);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

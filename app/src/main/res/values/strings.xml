@@ -3,6 +3,7 @@
     <string name="app_name">AndroidPractise</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="hello">Hello World, MyFrameLayoutDemo!</string>
+    <string name="prompt">Please select the city: </string>
+    <string name="area_prompt">Please select your area: </string>
 
 </resources>
