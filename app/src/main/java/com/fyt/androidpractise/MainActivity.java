@@ -4,47 +4,43 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends ActionBarActivity {
-    private Spinner _sp = null;
-    private Spinner _spArea = null;
-    private String[][] areaData = new String[][]{
-            {"东城", "西城", "朝阳", "海淀"},
-            {"浦东", "闵行", "上1", "上2"},
-            {"广1", "广2"},
-            {"深1", "深2"} };
-    private ArrayAdapter<CharSequence> adapterArea = null;
-
+    private int[] pic = new int[]{R.drawable.pic_oracle, R.drawable.pic_javase,
+            R.drawable.pic_javaweb, R.drawable.pic_javaee, R.drawable.pic_android};
+    private String data[][] = new String[][]{{"Oracle", "A"}, {"JavaSE", "B"}, {"JavaWeb", "C"},
+            {"JavaEE", "D"}, {"Android", "E"}};
+    private List<Map<String, String>> list = new ArrayList<>();
+    private SimpleAdapter simpleAdapter = null;
+    private ListView listView = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        this._sp = (Spinner)super.findViewById(R.id.spn);
-        this._spArea = (Spinner)super.findViewById(R.id.spn_area);
-
-        _sp.setOnItemSelectedListener(new spItemSelectedListener());
+        super.setContentView(R.layout.activity_main);
+        this.listView = (ListView)super.findViewById(R.id.datalist);
+        for(int i = 0; i < data.length; i++){
+            Map<String, String> map = new HashMap<>();
+            map.put("pic", String.valueOf(pic[i]));
+            map.put("title", data[i][0]);
+            map.put("author", data[i][1]);
+            map.put("star", String.valueOf(R.drawable.start_05));
+            this.list.add(map);
+        }
+        this.simpleAdapter = new SimpleAdapter(this, this.list, R.layout.data_list,
+                new String[]{"pic", "title", "author", "star"}, new int[]{R.id.pic, R.id.title,
+                R.id.author, R.id.star});
+        this.listView.setAdapter(this.simpleAdapter);
     }
 
-    private class spItemSelectedListener implements AdapterView.OnItemSelectedListener{
-        @Override
-        public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-            MainActivity.this.adapterArea = new ArrayAdapter<CharSequence>(MainActivity.this,
-                    android.R.layout.simple_dropdown_item_1line,
-                    MainActivity.this.areaData[position]);
-            MainActivity.this.adapterArea.setDropDownViewResource(
-                    android.R.layout.simple_spinner_dropdown_item);
-            MainActivity.this._spArea.setAdapter(MainActivity.this.adapterArea);
-        }
 
-        @Override
-        public void onNothingSelected(AdapterView<?> adapterView) {
 
-        }
-    }
 
 
     @Override

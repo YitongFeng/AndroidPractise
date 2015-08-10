@@ -2,20 +2,21 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rl_layout"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <Spinner
-        android:id = "@+id/spn"
-        android:layout_width="wrap_content"
+    <TextView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:entries="@array/city_labels"
-        android:prompt="@string/prompt"/>
-    <Spinner
-        android:id="@+id/spn_area"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:prompt="@string/area_prompt"/>
+        android:textSize="30dp"
+        android:layout_gravity="center"
+        android:text="FYT ListView Info List"/>
+    <ListView
+        android:id="@+id/datalist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </ListView>
+
 
 </LinearLayout>
