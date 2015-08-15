@@ -1,46 +1,52 @@
 package com.fyt.androidpractise;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
+import android.view.View;
+import android.widget.Button;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+public class MainActivity extends Activity {
+    private Button btn = null;
 
-public class MainActivity extends ActionBarActivity {
-    private int[] pic = new int[]{R.drawable.pic_oracle, R.drawable.pic_javase,
-            R.drawable.pic_javaweb, R.drawable.pic_javaee, R.drawable.pic_android};
-    private String data[][] = new String[][]{{"Oracle", "A"}, {"JavaSE", "B"}, {"JavaWeb", "C"},
-            {"JavaEE", "D"}, {"Android", "E"}};
-    private List<Map<String, String>> list = new ArrayList<>();
-    private SimpleAdapter simpleAdapter = null;
-    private ListView listView = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.activity_main);
-        this.listView = (ListView)super.findViewById(R.id.datalist);
-        for(int i = 0; i < data.length; i++){
-            Map<String, String> map = new HashMap<>();
-            map.put("pic", String.valueOf(pic[i]));
-            map.put("title", data[i][0]);
-            map.put("author", data[i][1]);
-            map.put("star", String.valueOf(R.drawable.start_05));
-            this.list.add(map);
-        }
-        this.simpleAdapter = new SimpleAdapter(this, this.list, R.layout.data_list,
-                new String[]{"pic", "title", "author", "star"}, new int[]{R.id.pic, R.id.title,
-                R.id.author, R.id.star});
-        this.listView.setAdapter(this.simpleAdapter);
+        this.btn = (Button)super.findViewById(R.id.btn);
+        this.btn.setOnClickListener(new ClickListenerImpl());
     }
 
+    private class ClickListenerImpl implements View.OnClickListener{
+        @Override
+        public void onClick(View view) {
+            LayoutInflater factory = LayoutInflater.from(MainActivity.this);
+            View myview = factory.inflate(R.layout.login_dialog, null);
+            Dialog dialog = new AlertDialog.Builder(MainActivity.this)
+                    .setTitle("Login")
+                    .setIcon(R.drawable.file_icon)
+                    .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
 
+                        }
+                    })
+                    .setPositiveButton("Login", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
 
+                        }
+                    })
+                    .setView(myview)
+                    .create();
+            dialog.show();
+        }
+    }
 
 
     @Override
